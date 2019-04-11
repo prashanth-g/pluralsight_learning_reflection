@@ -9,7 +9,7 @@ public class Reflection01 {
 
     public static void main(String[] args) throws ClassNotFoundException {
 
-        String personClassName = "com.prashanth.pluralsight.learning.reflection.core.Person";
+        String personClassName = "Person";
         Class<?> personClass = Class.forName(personClassName);
 
         System.out.println("Person class :" + personClass);
