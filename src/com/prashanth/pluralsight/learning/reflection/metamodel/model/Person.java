@@ -6,7 +6,7 @@ import com.prashanth.pluralsight.learning.reflection.metamodel.annotation.Primar
 public class Person {
 
     @PrimaryKey
-    private Long id;
+    private long id;
 
     @Column
     private int age;
@@ -15,6 +15,11 @@ public class Person {
     private String name;
 
     public Person() {
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
     }
 
     public Person(Long id, int age, String name) {
