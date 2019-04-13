@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class EntityManagerImpl<T> implements EntityManager<T> {
+public abstract class AbstractEntityManager<T> implements EntityManager<T> {
 
     private AtomicLong idGenerator = new AtomicLong(0L);
 
@@ -60,11 +60,12 @@ public class EntityManagerImpl<T> implements EntityManager<T> {
     }
 
     private PreparedStatementWrapper prepareStatementsWith(String sql) throws SQLException {
-        Connection connection = DriverManager
-                .getConnection("", "sa", "");
+        Connection connection = buildConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         return new PreparedStatementWrapper(statement);
     }
+
+    public abstract Connection buildConnection() throws SQLException;
 
     private class PreparedStatementWrapper {
         private PreparedStatement statement;
