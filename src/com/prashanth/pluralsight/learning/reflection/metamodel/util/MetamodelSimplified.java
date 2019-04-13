@@ -67,4 +67,11 @@ public class MetamodelSimplified {
         columnNames.add(0 , primaryKeyName);
         return String.join(", ", columnNames);
     }
+
+    public String buildSelectRequest() {
+        // select id, name, age from Person where id = ?
+        String columnElements = buildColumnNames();
+        return "select " + columnElements + " from " + this.clss.getSimpleName() +
+                " where " + getPrimaryKey().getName() + " = ?";
+    }
 }
