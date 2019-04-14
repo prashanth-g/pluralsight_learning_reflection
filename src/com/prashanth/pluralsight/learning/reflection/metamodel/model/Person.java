@@ -5,13 +5,13 @@ import com.prashanth.pluralsight.learning.reflection.metamodel.annotation.Primar
 
 public class Person {
 
-    @PrimaryKey
+    @PrimaryKey(name = "p_id")
     private long id;
 
-    @Column
+    @Column(name = "c_age")
     private int age;
 
-    @Column
+    @Column(name = "c_name")
     private String name;
 
     public Person() {

@@ -16,17 +16,19 @@ public abstract class AbstractEntityManager<T> implements EntityManager<T> {
     public void persist(T t) throws SQLException, IllegalAccessException {
         MetamodelSimplified metamodel = MetamodelSimplified.of(t.getClass());
         String sql = metamodel.buildInsertRequest();
-        PreparedStatement statement = prepareStatementsWith(sql).andParameters(t);
-        statement.executeUpdate();
+        try(PreparedStatement statement = prepareStatementsWith(sql).andParameters(t)) {
+            statement.executeUpdate();
+        }
     }
 
     @Override
     public T find(Class<T> clss, long primaryKey) throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         MetamodelSimplified metamodel = MetamodelSimplified.of(clss);
         String sql = metamodel.buildSelectRequest();
-        PreparedStatement statement = prepareStatementsWith(sql).andPrimaryKey(primaryKey);
-        ResultSet resultSet = statement.executeQuery();
-        return buildInstanceFrom(clss, resultSet);
+        try(PreparedStatement statement = prepareStatementsWith(sql).andPrimaryKey(primaryKey)) {
+            ResultSet resultSet = statement.executeQuery();
+            return buildInstanceFrom(clss, resultSet);
+        }
     }
 
     private T buildInstanceFrom(Class<T> clss, ResultSet resultSet) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, SQLException {
