@@ -1,5 +1,6 @@
 package com.prashanth.pluralsight.learning.reflection.metamodel.orm;
 
+import com.prashanth.pluralsight.learning.reflection.metamodel.annotation.Inject;
 import com.prashanth.pluralsight.learning.reflection.metamodel.util.ColumnField;
 import com.prashanth.pluralsight.learning.reflection.metamodel.util.MetamodelSimplified;
 
@@ -8,9 +9,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.concurrent.atomic.AtomicLong;
 
-public abstract class AbstractEntityManager<T> implements EntityManager<T> {
+public class ManagedEntityManager<T> implements EntityManager<T> {
 
     private AtomicLong idGenerator = new AtomicLong(0L);
+
+    @Inject
+    Connection connection;
 
     @Override
     public void persist(T t) throws SQLException, IllegalAccessException {
@@ -62,12 +66,9 @@ public abstract class AbstractEntityManager<T> implements EntityManager<T> {
     }
 
     private PreparedStatementWrapper prepareStatementsWith(String sql) throws SQLException {
-        Connection connection = buildConnection();
         PreparedStatement statement = connection.prepareStatement(sql);
         return new PreparedStatementWrapper(statement);
     }
-
-    public abstract Connection buildConnection() throws SQLException;
 
     private class PreparedStatementWrapper {
         private PreparedStatement statement;
