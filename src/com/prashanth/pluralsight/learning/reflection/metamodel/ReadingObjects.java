@@ -5,6 +5,9 @@ import com.prashanth.pluralsight.learning.reflection.metamodel.model.Person;
 import com.prashanth.pluralsight.learning.reflection.metamodel.orm.EntityManager;
 import com.prashanth.pluralsight.learning.reflection.metamodel.orm.ManagedEntityManager;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 
@@ -23,5 +26,13 @@ public class ReadingObjects {
         System.out.println(marcus);
         System.out.println(alex);
         System.out.println(azar);
+
+        Lookup lookup = MethodHandles.lookup();
+
+        try {
+            MethodHandle nameReader = lookup.findGetter(Person.class,  "name", String.class);
+        } catch (NoSuchFieldException e) {
+            // e.printStackTrace();
+        }
     }
 }
